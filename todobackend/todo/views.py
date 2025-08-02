@@ -3,6 +3,11 @@ from rest_framework.response import Response
 from rest_framework import status
 from .models import Todo
 from .serializers import AddTodoSerializer, ListTodoSerializer,UpdataTodoSerializer,CompleteStatusSerializer
+from django.http import JsonResponse
+
+def home(request):
+    return JsonResponse({"message": "Django backend is live"})
+
 
 class AddTodoView(APIView):
     def post(self, request):
