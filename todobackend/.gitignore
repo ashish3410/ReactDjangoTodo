@@ -1,0 +1,34 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.so
+
+# Virtual environment
+venv/
+env/
+*.env
+todoenv/
+
+# Django specific
+*.sqlite3
+db.sqlite3
+/staticfiles/
+/media/
+/migrations/        # You might want to ignore only auto-generated ones
+*.log
+
+# VSCode / IDE
+.vscode/
+.idea/
+*.swp
+
+# Byte-compiled / optimized / DLL files
+*.egg-info/
+*.egg
+dist/
+build/
+
+# OS files
+.DS_Store
+Thumbs.db
