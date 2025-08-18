@@ -2,9 +2,11 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 // Define a service using a base URL and expected endpoints
+const isDevelopment = import.meta.env.MODE === 'development';
+const mybaseUrl = isDevelopment ? import.meta.env.VITE_API_BASE_URL_LOCAL : import.meta.env.VITE_API_BASE_URL_DEPLOY;
 export const TodoApis = createApi({
   reducerPath: 'TodoApis',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://127.0.0.1:8000/api/todo/' }),
+  baseQuery: fetchBaseQuery({ baseUrl: mybaseUrl }),
   endpoints: (builder) => ({
     addTodo: builder.mutation({
       query: ({newTask,priority2})=>({
