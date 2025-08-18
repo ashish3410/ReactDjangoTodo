@@ -140,3 +140,4 @@ CORS_ALLOW_HEADERS =[
 ]
 
 
+STATIC_ROOT= BASE_DIR/'staticfiles'
