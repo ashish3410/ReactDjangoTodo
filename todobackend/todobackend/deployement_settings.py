@@ -23,7 +23,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOW_ORIGINS = [
-    'https://reactdjangotodo.onrender.com/'
+    'https://reactdjangotodo-1.onrender.com/'
 ]
 
 
