@@ -2,11 +2,76 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Todo
-from .serializers import AddTodoSerializer, ListTodoSerializer,UpdataTodoSerializer,CompleteStatusSerializer
+from .serializers import AddTodoSerializer, ListTodoSerializer,UpdataTodoSerializer,CompleteStatusSerializer,UserRegistrationSerializer
 from django.http import JsonResponse
+from django.contrib.auth import authenticate
+from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated ,AllowAny
+
 
 def home(request):
     return JsonResponse({"message": "Django backend is live"})
+
+class RegisterView(APIView):
+    permission_classes=[AllowAny]
+    def post(self, request):
+        serializer = UserRegistrationSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            token, created = Token.objects.get_or_create(user=user)
+            print(token.key)
+            return Response({
+                'message': 'User registered successfully',
+                'token': token.key,
+                'user_id': user.id,
+                'username': user.username,
+                'email': user.email,
+                'status': status.HTTP_201_CREATED
+            })
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class LoginView(APIView):
+    permission_classes=[AllowAny]
+    def post(self, request):
+        username = request.data.get('username')
+        password = request.data.get('password')
+        
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if user:
+                token, created = Token.objects.get_or_create(user=user)
+                return Response({
+                    'message': 'Login successful',
+                    'token': token.key,
+                    'user_id': user.id,
+                    'email': user.email,
+                    'status': status.HTTP_200_OK
+                })
+            else:
+                return Response({
+                    'message': 'Invalid credentials',
+                    'status': status.HTTP_401_UNAUTHORIZED
+                }, status=status.HTTP_401_UNAUTHORIZED)
+        
+        return Response({
+            'message': 'Username and password required',
+            'status': status.HTTP_400_BAD_REQUEST
+        }, status=status.HTTP_400_BAD_REQUEST)
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+    def post(self, request):
+        try:
+            request.user.auth_token.delete()
+            return Response({
+                'message': 'Logout successful',
+                'status': status.HTTP_200_OK
+            })
+        except:
+            return Response({
+                'message': 'Error logging out',
+                'status': status.HTTP_400_BAD_REQUEST
+            }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class AddTodoView(APIView):
@@ -19,8 +84,9 @@ class AddTodoView(APIView):
 
 class ListTodoView(APIView):
     def get(self,request):
-        todos=Todo.objects.all()
-        serializer=ListTodoSerializer(todos,many=True)
+        user=request.user
+        queryset=Todo.objects.filter(created_by=user)
+        serializer=ListTodoSerializer(queryset,many=True)
         return Response(serializer.data)
     
 class UpdateTodoView(APIView):

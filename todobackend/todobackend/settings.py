@@ -23,9 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-)kce4!cu19soos_*eo33t-ibhugdq#5y)^##zd2-a%k6b3j1l6'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-
-ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app']
+DEBUG = True
 
 
 # Application definition
@@ -40,6 +38,8 @@ INSTALLED_APPS = [
     'todo',
     'rest_framework',
     'corsheaders',
+    'rest_framework.authtoken',
+    
 ]
 
 MIDDLEWARE = [
@@ -132,12 +132,23 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CORS_ALLOW_ALL_ORIGINS = True
-
 CORS_ALLOW_HEADERS =[
     'content-type',
     'authorization',
 ]
 
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
+}
+
 STATIC_ROOT= BASE_DIR/'staticfiles'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+]
