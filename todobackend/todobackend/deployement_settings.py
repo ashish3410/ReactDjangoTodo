@@ -22,9 +22,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-# CORS_ALLOW_ORIGINS = [
-#     ''
-# ]
+CORS_ALLOW_ORIGINS = [
+    'https://reactdjangotodo.onrender.com/'
+]
 
 
 STORAGES={
