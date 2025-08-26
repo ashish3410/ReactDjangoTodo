@@ -78,13 +78,14 @@ class AddTodoView(APIView):
     def post(self, request):
         serializer = AddTodoSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(created_by=request.user)
             return Response({'message': 'Todo added successfully', 'status': status.HTTP_200_OK})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class ListTodoView(APIView):
     def get(self,request):
         user=request.user
+        print(user)
         queryset=Todo.objects.filter(created_by=user)
         serializer=ListTodoSerializer(queryset,many=True)
         return Response(serializer.data)
