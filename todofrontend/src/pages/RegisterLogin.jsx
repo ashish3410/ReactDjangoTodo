@@ -46,6 +46,7 @@ const AuthForms = () => {
       // console.log('Register Response:', res);
       if (res.data?.token && res?.data?.status === 201) {
         localStorage.setItem('token', res.data.token);
+        localStorage.setItem('username', formData.name);
         alert('Registration successful!');
         navigate('/todos');
 
