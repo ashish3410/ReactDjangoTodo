@@ -113,6 +113,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
+# CORS_ALLOW_ALL_ORIGINS=True
+
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -132,7 +135,7 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CORS_ALLOW_HEADERS =[
+CORS_ALLOW_HEADERS = [
     'content-type',
     'authorization',
 ]
@@ -149,6 +152,8 @@ REST_FRAMEWORK = {
 
 STATIC_ROOT= BASE_DIR/'staticfiles'
 
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://localhost:5174",
 ]
